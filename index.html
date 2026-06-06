@@ -8,10 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Vue.js 3 CDN -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <!-- Google Fonts (Noto Sans JP) -->
+  <!-- Google Fonts (Noto Sans JP & Plus Jakarta Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     body {
       font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
@@ -29,6 +30,25 @@
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+    /* Simple transitions for premium feel */
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .fade-enter-from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .fade-leave-to {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    .slide-up-enter-active {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-up-enter-from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen text-slate-800 transition-colors duration-300">
@@ -39,7 +59,6 @@
     <header class="max-w-2xl w-full mx-auto flex justify-between items-center mb-4">
       <div class="flex items-center space-x-2">
         <span class="p-1.5 bg-indigo-600 rounded-lg text-white shadow-md shadow-indigo-200">
-          <!-- Logo SVG -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21L14.907 18M18 11.5L21 8.5L15.5 3L12.5 6M18 11.5L12.5 6M18 11.5L15.5 17.5M12.5 6L6.5 11.5M15.5 17.5L14.907 18M15.5 17.5L9.813 15.904M9.813 15.904L3 15L9 9L12.5 6M9 9l3.5 5.5" />
           </svg>
@@ -47,35 +66,30 @@
         <span class="font-bold text-lg text-slate-800 tracking-wider">AI Quiz 2026</span>
       </div>
       
-      <!-- Audio Settings Icon -->
+      <!-- Audio Settings -->
       <button 
         @click="toggleSound" 
         class="p-2.5 bg-white/80 hover:bg-white border border-slate-200/60 rounded-xl shadow-sm transition-all duration-200 text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         title="音量の切り替え"
       >
-        <!-- Sound On SVG -->
         <svg v-if="soundEnabled" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
         </svg>
-        <!-- Muted SVG -->
         <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L11.47 3.53a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
         </svg>
       </button>
     </header>
 
-    <!-- Main Container -->
     <main class="flex-grow flex items-center justify-center py-4 w-full">
       
       <!-- ================= WELCOME SCREEN ================= -->
       <transition name="fade" mode="out-in">
         <div v-if="currentView === 'welcome'" class="max-w-2xl w-full bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-white shadow-2xl shadow-indigo-100/40 relative overflow-hidden">
-          <!-- Background decorative shapes -->
           <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-200/30 rounded-full blur-2xl -mr-10 -mt-10"></div>
           <div class="absolute bottom-0 left-0 w-36 h-36 bg-pink-200/30 rounded-full blur-2xl -ml-12 -mb-12"></div>
           
           <div class="relative text-center">
-            <!-- App Logo & Intro -->
             <div class="inline-flex items-center justify-center p-4 bg-gradient-to-tr from-indigo-500 to-purple-500 text-white rounded-3xl shadow-lg shadow-indigo-300/40 mb-6 animate-bounce">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
@@ -91,15 +105,15 @@
             </h1>
             
             <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mx-auto mb-8">
-              中高生向けに最新のテクノロジー・AI用語を優しく解説！<br>
-              「低・中・高」の難易度バランスを考えた合計10問のクイズにランダムで挑戦しましょう！
+              最新のテクノロジー用語集から、バランス良く10問を出題します。<br>
+              クイズの後に間違えた箇所を<b>「もう一度確認クイズ」</b>で克服できます！
             </p>
             
             <!-- Quiz Configuration Meta -->
             <div class="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 max-w-md mx-auto mb-8 text-left space-y-3">
               <div class="flex justify-between items-center text-xs font-medium text-slate-500 pb-2 border-b border-slate-200/60">
                 <span>出題構成（計10問）</span>
-                <span class="text-indigo-600 font-semibold">バランス調整済み</span>
+                <span class="text-indigo-600 font-semibold">難易度バランス自動調整</span>
               </div>
               <div class="grid grid-cols-3 gap-2 text-center text-xs">
                 <div class="p-2 bg-emerald-50 rounded-xl border border-emerald-100">
@@ -108,7 +122,7 @@
                 </div>
                 <div class="p-2 bg-amber-50 rounded-xl border border-amber-100">
                   <span class="block font-black text-amber-700 mb-0.5">中難易度</span>
-                  <span class="text-slate-500 font-bold">4問</span>
+                  <span class="text-slate-500 font-bold font-sans">4問</span>
                 </div>
                 <div class="p-2 bg-rose-50 rounded-xl border border-rose-100">
                   <span class="block font-black text-rose-700 mb-0.5">高難易度</span>
@@ -119,7 +133,7 @@
 
             <!-- Start Button -->
             <button 
-              @click="startQuiz" 
+              @click="startQuiz('normal')" 
               class="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-lg shadow-indigo-300/50 hover:shadow-xl hover:shadow-indigo-400/60 active:scale-[0.98] transition-all duration-150 focus:outline-none focus:ring-4 focus:ring-indigo-300 cursor-pointer"
             >
               <span class="relative flex items-center space-x-2 text-lg">
@@ -139,7 +153,6 @@
           <div>
             <!-- Header: Progress & Difficulty -->
             <div class="flex justify-between items-center mb-4">
-              <!-- Left: Difficulty Label (Color Code) -->
               <div>
                 <span 
                   :class="difficultyClass(currentQuestion.difficulty)"
@@ -148,14 +161,17 @@
                   <span class="w-1.5 h-1.5 rounded-full mr-1.5" :class="difficultyDotClass(currentQuestion.difficulty)"></span>
                   難易度: {{ currentQuestion.difficulty }}
                 </span>
+                
+                <span v-if="isReviewMode" class="ml-2 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                  ⚠️ 復習確認中
+                </span>
               </div>
               
-              <!-- Right: Question Progress (n/10) -->
               <div class="text-right">
-                <span class="text-slate-400 text-xs font-semibold tracking-wider">PROGRESS</span>
-                <div class="text-slate-800 text-base font-extrabold">
-                  <span class="text-indigo-600 text-xl">{{ currentQuestionIndex + 1 }}</span>
-                  <span class="text-slate-400"> / 10 問</span>
+                <span class="text-slate-400 text-[10px] font-bold tracking-wider block">PROGRESS</span>
+                <div class="text-slate-800 text-sm font-extrabold font-sans">
+                  <span class="text-indigo-600 text-lg">{{ currentQuestionIndex + 1 }}</span>
+                  <span class="text-slate-400"> / {{ questions.length }} 問</span>
                 </div>
               </div>
             </div>
@@ -164,7 +180,7 @@
             <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
               <div 
                 class="bg-gradient-to-r from-indigo-500 to-purple-600 h-full transition-all duration-300 rounded-full"
-                :style="{ width: ((currentQuestionIndex + 1) / 10) * 100 + '%' }"
+                :style="{ width: ((currentQuestionIndex + 1) / questions.length) * 100 + '%' }"
               ></div>
             </div>
 
@@ -174,7 +190,7 @@
               <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight leading-normal font-sans">
                 {{ currentQuestion.termEnglish }}
               </h2>
-              <div class="mt-2 text-sm text-slate-500 font-medium">
+              <div class="mt-2 text-xs sm:text-sm text-slate-500 font-medium">
                 {{ currentQuestion.termJapanese }}
               </div>
             </div>
@@ -207,19 +223,16 @@
                   </div>
                   <!-- Answered State Icons -->
                   <div v-else>
-                    <!-- Correct Icon (Emerald Check) -->
                     <span v-if="option.isCorrect" class="text-emerald-600 block">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                       </svg>
                     </span>
-                    <!-- Selected Incorrect Icon (Rose Cross) -->
                     <span v-else-if="selectedOptionIndex === idx" class="text-rose-600 block">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                       </svg>
                     </span>
-                    <!-- Neutral Dot for Non-selected Incorrect -->
                     <div v-else class="w-5 h-5 rounded-full border border-slate-200 bg-slate-50"></div>
                   </div>
                 </div>
@@ -233,15 +246,15 @@
           <div>
             <!-- Explanation Panel (Shows after answer is submitted) -->
             <transition name="slide-up">
-              <div v-if="hasAnswered" class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 mb-5 space-y-2.5">
+              <div v-if="hasAnswered" class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5 mb-5 space-y-2">
                 <div class="flex items-center space-x-2">
                   <span 
-                    :class="isCorrectAnswer ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
-                    class="px-2.5 py-0.5 text-xs font-black rounded-md tracking-wider"
+                    :class="isCorrectAnswer ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200'"
+                    class="px-2.5 py-0.5 text-xs font-black rounded-md tracking-wider border"
                   >
                     {{ isCorrectAnswer ? '正解！' : '不正解' }}
                   </span>
-                  <span class="text-xs font-bold text-slate-400">用語ワンポイント解説</span>
+                  <span class="text-xs font-bold text-slate-400">解説</span>
                 </div>
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   {{ currentQuestion.explanation }}
@@ -251,7 +264,6 @@
 
             <!-- Bottom Button -->
             <div>
-              <!-- Before Answering (Submit button) -->
               <button 
                 v-if="!hasAnswered"
                 @click="submitAnswer"
@@ -261,19 +273,18 @@
                   ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none' 
                   : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200 hover:shadow-lg'"
               >
-                <span>解答する</span>
+                <span>回答する</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </button>
 
-              <!-- After Answering (Next / Scoreboard button) -->
               <button 
                 v-else
                 @click="nextQuestion"
                 class="w-full py-4 rounded-xl font-bold text-white shadow-md bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 active:scale-[0.99] shadow-indigo-200 hover:shadow-lg transition-all duration-150 cursor-pointer flex justify-center items-center space-x-2"
               >
-                <span>{{ currentQuestionIndex < 9 ? '次の問題へ進む' : '総合結果を見る' }}</span>
+                <span>{{ currentQuestionIndex < questions.length - 1 ? '次の問題へ進む' : '結果を見る' }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
@@ -286,7 +297,7 @@
       <!-- ================= TOTAL SCORE SCREEN ================= -->
       <transition name="fade">
         <div v-if="currentView === 'result'" class="max-w-2xl w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-white shadow-2xl shadow-indigo-100/30 relative overflow-hidden">
-          <!-- Confetti Overlay Canvas -->
+          <!-- Confetti Canvas -->
           <canvas id="confetti-canvas" class="absolute inset-0 pointer-events-none w-full h-full"></canvas>
 
           <div class="relative text-center">
@@ -294,37 +305,37 @@
               RESULT SCORE
             </span>
             <h2 class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight mb-6">
-              テスト終了！お疲れ様でした！
+              {{ isReviewMode ? '復習テスト終了！' : 'テスト終了！お疲れ様でした！' }}
             </h2>
 
-            <!-- Circular Progress Score Chart -->
+            <!-- Circular Progress Score -->
             <div class="inline-flex items-center justify-center relative mb-6">
               <svg class="w-32 h-32 transform -rotate-90">
                 <circle cx="64" cy="64" r="54" stroke-width="10" stroke="#f1f5f9" fill="transparent"/>
                 <circle cx="64" cy="64" r="54" stroke-width="10" :stroke="scoreColor" fill="transparent"
                   :stroke-dasharray="2 * Math.PI * 54"
-                  :stroke-dashoffset="2 * Math.PI * 54 * (1 - score / 10)"
+                  :stroke-dashoffset="2 * Math.PI * 54 * (1 - score / questions.length)"
                   class="transition-all duration-1000 ease-out"
                 />
               </svg>
               <div class="absolute text-center">
-                <span class="block text-3xl font-black text-slate-800">{{ score }}<span class="text-sm font-semibold text-slate-400">/10問</span></span>
-                <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">CORRECT</span>
+                <span class="block text-3xl font-black text-slate-800 font-sans">{{ score }}<span class="text-xs font-bold text-slate-400">/{{ questions.length }}問</span></span>
+                <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase block mt-0.5">CORRECT</span>
               </div>
             </div>
 
-            <!-- Rank Title & Message -->
+            <!-- Score Rank Detail -->
             <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 mb-6 max-w-md mx-auto text-center">
-              <div class="text-indigo-600 text-lg font-black tracking-tight mb-1.5 flex items-center justify-center">
-                <span class="mr-2">{{ scoreRank.badge }}</span>
+              <div class="text-indigo-600 text-base sm:text-lg font-black tracking-tight mb-1.5 flex items-center justify-center">
+                <span class="mr-2 text-xl">{{ scoreRank.badge }}</span>
                 <span>{{ scoreRank.title }}</span>
               </div>
-              <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+              <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium">
                 {{ scoreRank.msg }}
               </p>
             </div>
 
-            <!-- Quiz Score Timeline (Visual Checklist of 10 questions) -->
+            <!-- Quiz Score Timeline (Visual Checklist) -->
             <div class="flex justify-center items-center space-x-1.5 sm:space-x-2.5 mb-8">
               <div 
                 v-for="(historyItem, index) in history" 
@@ -340,8 +351,48 @@
               </div>
             </div>
 
+            <!-- REVISED: Mail Report Section (100% Reliable Copy to Clipboard) -->
+            <div class="bg-indigo-50/50 border border-indigo-100/80 rounded-2xl p-5 mb-6 max-w-md mx-auto text-left shadow-sm">
+              <h3 class="text-indigo-950 font-bold text-sm tracking-wide mb-1 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                結果をメールで先生に送ってください。
+              </h3>
+              <p class="text-[11px] text-slate-500 leading-relaxed mb-4">
+                下のボタンを押すと、今回のスコアがコピーされるので、Gmailを起動して、貼り付けてください。指示はClassroomのとおりにしてメール送信してください。
+              </p>
+              
+              <div class="space-y-2">
+                <!-- Backup Copy Option (100% Reliable in Sandbox) -->
+                <button 
+                  @click="copyReportToClipboard"
+                  class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 cursor-pointer border border-indigo-750"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0A2.25 2.25 0 0113.5 5.25h-3a2.25 2.25 0 01-2.166-1.638m7.332 0a2.25 2.25 0 00-1.47-1.803m-7.332 0a2.25 2.25 0 00-1.47 1.803M2.25 10.5H18M1.5 5.25h16.5A1.5 1.5 0 0119.5 6.75v14.25a1.5 1.5 0 01-1.5 1.5H1.5a1.5 1.5 0 01-1.5-1.5V6.75A1.5 1.5 0 011.5 5.25zm3 9h12" />
+                  </svg>
+                  <span>【提出】結果をコピーしてGmailに貼り付けて、メールで結果を送る。</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Toast Notification for Copy Success -->
+            <div 
+              v-if="copySuccessVisible" 
+              class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-xl flex flex-col items-center space-y-1 animate-bounce"
+            >
+              <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>結果レポートをコピーしました！</span>
+              </div>
+              <span class="text-[10px] text-emerald-100 font-medium">そのままGmailの本文欄に貼り付けて先生に送信してください。</span>
+            </div>
+
             <!-- Review Section (Expandable Accordion) -->
-            <div class="mb-8 text-left border border-slate-200/60 rounded-2xl overflow-hidden bg-white">
+            <div class="mb-8 text-left border border-slate-200/60 rounded-2xl overflow-hidden bg-white shadow-sm">
               <button 
                 @click="showReview = !showReview"
                 class="w-full flex justify-between items-center px-5 py-4 bg-slate-50/50 hover:bg-slate-50 font-bold text-sm text-slate-700 transition-colors focus:outline-none"
@@ -350,7 +401,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-2 text-indigo-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.23 2.29l5 5M8.25 18.75h9M8.25 15h9M8.25 11.25h5.25m-10.5 0h1.5m-1.5 3.75h1.5m-1.5 3.75h1.5" />
                   </svg>
-                  出題された10問を復習する
+                  出題された{{ questions.length }}問を復習する
                 </span>
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -390,27 +441,53 @@
               </div>
             </div>
 
-            <!-- Final Page Navigation Actions -->
-            <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <!-- Final Actions with Confirm / Review Test Option -->
+            <div class="flex flex-col gap-3 max-w-md mx-auto">
+              <!-- Special "Review Incorrect Only" Button if score is not perfect -->
               <button 
-                @click="resetQuiz" 
-                class="w-full sm:w-auto px-8 py-3.5 font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-100 transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-2"
+                v-if="score < questions.length"
+                @click="startQuiz('incorrect_only')" 
+                class="w-full py-4 font-extrabold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-xl shadow-lg shadow-orange-100 hover:shadow-orange-200 transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-2"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>もう一回やる</span>
+                <span>間違えた問題（{{ questions.length - score }}問）をもう一度確認クイズ</span>
               </button>
 
+              <!-- Special "Review All" Button if score is perfect -->
               <button 
-                @click="finishSession" 
-                class="w-full sm:w-auto px-8 py-3.5 font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl border border-slate-200 transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-2"
+                v-else
+                @click="startQuiz('same_set')" 
+                class="w-full py-4 font-extrabold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-xl shadow-lg shadow-emerald-100 hover:shadow-emerald-200 transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-2"
               >
-                <span>終了する</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                 </svg>
+                <span>満点おめでとう！同じ10問でもう一度確認クイズ</span>
               </button>
+
+              <div class="flex flex-col sm:flex-row gap-3 w-full">
+                <button 
+                  @click="startQuiz('normal')" 
+                  class="flex-1 px-5 py-3.5 font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-1.5"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                  <span>新しい10問に挑戦</span>
+                </button>
+
+                <button 
+                  @click="finishSession" 
+                  class="flex-1 px-5 py-3.5 font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl border border-slate-200 transition-all duration-150 active:scale-[0.98] cursor-pointer flex items-center justify-center space-x-1.5"
+                >
+                  <span>終了する</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -421,51 +498,46 @@
         <div v-if="currentView === 'finish'" class="max-w-2xl w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-white shadow-2xl shadow-indigo-100/30 text-center relative overflow-hidden">
           <div class="relative">
             <div class="inline-flex items-center justify-center p-4 bg-emerald-50 rounded-3xl mb-6 border border-emerald-100">
-              <!-- Trophy SVG -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-emerald-600 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.745 3.745 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
               </svg>
             </div>
             
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight leading-tight mb-4">
-              クイズを完了しました！
+              学習お疲れ様でした！
             </h2>
             <p class="text-slate-500 text-sm sm:text-base leading-relaxed max-w-lg mx-auto mb-8">
-              これでテクノロジー用語の基本レッスンは完了です。<br>
-              デジタル社会をかしこく・安全に生き抜くために、学んだ知識を普段の生活にも活かしてみましょう！
+              確認クイズをやり遂げたあなたは、2026年の最先端テクノロジーと生成AIに関するリテラシーが格段に向上しました！
             </p>
 
-            <!-- Final Takeaways Card for Students -->
             <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5 sm:p-6 text-left max-w-md mx-auto mb-8 space-y-4">
               <h3 class="text-indigo-900 font-bold text-sm tracking-wide border-b border-indigo-100 pb-2 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 mr-2 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v10.441a2.25 2.25 0 01-.659 1.59l-5.32 5.32a2.25 2.25 0 01-1.59.659H5.25A2.25 2.25 0 013 18.75V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
                 </svg>
-                学生のうちに意識したい3つのこと
+                これからの情報社会で意識したい3大原則
               </h3>
               
               <ul class="space-y-3 text-xs sm:text-sm text-slate-600">
                 <li class="flex items-start">
-                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5">1</span>
-                  <span><strong class="text-indigo-950 font-bold block">Explorer Mode（探求者）になろう</strong> AIは代わりに宿題をやってもらうためのものではなく、自分の思考を深める壁打ち相手としてフル活用しましょう！</span>
+                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5 font-sans">1</span>
+                  <span><strong class="text-indigo-950 font-bold block">Explorer（探究者）になること</strong> AIを「代わりに終わらせるツール」ではなく「自分の考えを広げる賢い相棒」としてエクスプローラー・モードで付き合っていきましょう。</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5">2</span>
-                  <span><strong class="text-indigo-950 font-bold block">誠実さを大切に（Academic Integrity）</strong> AIの答えをそのままコピペして提出せず、自分の力で学ぶ楽しさとルールを守りましょう。</span>
+                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5 font-sans">2</span>
+                  <span><strong class="text-indigo-950 font-bold block">誠実さを大切にする姿勢</strong> アカデミック・インテグリティを守り、AIの出力した文章をそのまま提出せず、最後は必ず自分の頭でファクトチェックしましょう。</span>
                 </li>
                 <li class="flex items-start">
-                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5">3</span>
-                  <span><strong class="text-indigo-950 font-bold block">脳を健康に保とう（Brain Rot 対策）</strong> スマホやSNSのショート動画を深く考えずにダラダラ見る「ドゥームスクローリング」を少しだけ減らして、リアルな対話を楽しもう。</span>
+                  <span class="flex-shrink-0 w-5 h-5 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs mr-2.5 mt-0.5 font-sans">3</span>
+                  <span><strong class="text-indigo-950 font-bold block">アテンションを守る習慣</strong> アテンション・エコノミーを理解し、SNSやショート動画（SFV）の無限スクロールで「ブレイン・ロット（脳の衰退）」に陥らない自己管理の力を養いましょう。</span>
                 </li>
               </ul>
             </div>
 
-            <!-- Return to Home -->
             <button 
               @click="returnHome" 
-              class="px-8 py-3.5 font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md shadow-indigo-100 transition-all duration-150 active:scale-[0.98] cursor-pointer inline-flex items-center space-x-2"
+              class="px-8 py-3.5 font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition-all duration-150 active:scale-[0.98] cursor-pointer inline-flex items-center space-x-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -478,7 +550,7 @@
 
     </main>
 
-    <!-- Footer Copyright -->
+    <!-- Footer -->
     <footer class="max-w-2xl w-full mx-auto text-center py-2 text-[10px] sm:text-xs text-slate-400 font-semibold tracking-widest uppercase">
       © 2026 AI LITERACY CHALLENGE FOR STUDENTS
     </footer>
@@ -486,220 +558,264 @@
   </div>
 
   <script>
-    // CSVから取得した完全なテクノロジー用語集のマスターデータ
+    // テクノロジー用語集2026 - 全23語の完全定義データ
     const vocabularyList = [
       {
         termEnglish: "FOMO（Fear Of Missing Out）",
         termJapanese: "フィア・オブ・ミッシィング・アウト：置いてけぼりの恐怖",
         difficulty: "高",
-        explanation: "FOMO（フォーモ）は「自分だけが楽しい体験を逃しているのではないか」という焦りや不安の感情です。SNSで他人の充実した生活を見て、常にスマホをチェックしたくなる現代病のような状態を指します。",
+        explanation: "FOMO（フォーモ）は「自分だけが楽しい体験や最新トレンドを逃しているのではないか」という焦りや不安です。SNSを見て他人の生活を羨ましがり、スマホを四六時中チェックしたくなる心の状態を指します。",
         options: [
-          { text: "SNSで友達の楽しそうな様子を見て、自分だけ仲間外れになっているように感じて不安になること", isCorrect: true },
-          { text: "新しいスマホの機種が発売されたときに、自分のお金が足りなくて買えないのではないかと焦る気持ち", isCorrect: false },
-          { text: "暗い部屋でスマホを使っているときに、画面から強い光が出て一瞬何も見えなくなってしまう現象", isCorrect: false }
+          { text: "SNSで他人の充実した投稿を見て、自分だけ仲間外れになっているように不安に感じること", isCorrect: true },
+          { text: "暗い部屋でスマホを使っているときに、画面から強いブルーライトが出て一瞬目がかすむこと", isCorrect: false },
+          { text: "新しい高額なパソコンが発売された時、予算が足りなくて買えないのではないかと焦る気持ち", isCorrect: false }
         ]
       },
       {
         termEnglish: "Distraction",
         termJapanese: "ディストラクション：注意の妨げ",
         difficulty: "高",
-        explanation: "ディストラクションは「注意を散らすもの」という意味です。勉強中や授業中にスマホの通知が鳴ってついつい触ってしまうように、集中を妨げる誘惑や障害物のことを指します。",
+        explanation: "ディストラクションとは、今取り組みたいこと（勉強など）から「気を散らせる誘惑や邪魔者」のことです。勉強しようとしている横でスマホが光ることは、代表的なディストラクションです。",
         options: [
-          { text: "スマホの通知や広告のせいで、勉強など今集中したいことから気が散ってしまうこと", isCorrect: true },
-          { text: "スマホの画面が突然砂嵐のようになり、操作が全くできなくなってしまうハードウェアの故障", isCorrect: false },
-          { text: "学校のテストで、緊張のあまり頭の中が真っ白になって何も思い出せなくなってしまうこと", isCorrect: false }
+          { text: "スマホの通知やアプリの広告のせいで、勉強や読書など本来集中したいことへの気が散ってしまう状態", isCorrect: true },
+          { text: "パソコンがハッカーに乗っ取られ、勝ために画面が何百個も立ち上がってフリーズしてしまうバグ", isCorrect: false },
+          { text: "ゲームの最中に充電が0%になり、セーブデータを残したまま端末の電源が突然切れてしまう現象", isCorrect: false }
         ]
       },
       {
         termEnglish: "Attention Economy",
         termJapanese: "アテンション・エコノミー：注意経済",
         difficulty: "中",
-        explanation: "アテンション・エコノミー（注意経済）は、人々の「関心（アテンション）」や「スマホを使う時間」を奪い合うことで、広告収入などを得る現代のインターネットビジネスの基本となる仕組みです。",
+        explanation: "アテンション・エコノミーは、情報過多な現代において、人間の『関心や注目（アテンション）』をSNS等がいかに奪い取るか、その時間がそのまま価値や莫大な広告利益を生むビジネスモデルです。",
         options: [
-          { text: "インターネット上で人々の『注目』や『時間』を集めることが、最も価値のあるビジネスになるという考え方", isCorrect: true },
-          { text: "スマホの使用時間を1日1時間に制限することで、お小遣いがもらえる国レベルの新しい貯金制度", isCorrect: false },
-          { text: "授業中、先生の話をしっかり聞いている生徒に対して、学校から電子ポイントが配られる仕組み", isCorrect: false }
+          { text: "ネット上で人々の『注目』や『スマホを使う時間』を集めることが最もお金を生むようになるという考え方", isCorrect: true },
+          { text: "スマホの使用時間を1日1時間に制限すると、政府から毎月キャッシュバックがもらえるお小遣い制度", isCorrect: false },
+          { text: "授業中に先生の話を1秒も聞き漏らさなかった優秀な生徒に対して配布される学校独自のデジタルポイント", isCorrect: false }
         ]
       },
       {
         termEnglish: "Brain Rot",
         termJapanese: "ブレイン・ロット：脳の腐敗",
         difficulty: "高",
-        explanation: "ブレイン・ロット（脳の腐敗）は、SNSの短い動画や中身のないネットコンテンツを深く考えずにダラダラと見続けることで、集中力や批判的思考力が衰えていく状態を警告する言葉です。",
+        explanation: "ブレイン・ロットとは、意味のない短い動画や中身の薄いコンテンツを目的なくダラダラと消費し続けることで、自分自身で論理的に深く考える力や、1つのことに集中する機能が衰えていく現象に対する警告用語です。",
         options: [
-          { text: "意味のない短い動画などをダラダラ見すぎて、自分で深く考える力や集中力が落ちてしまう状態", isCorrect: true },
-          { text: "VRゴーグルを長時間つけたことで、三半規管が狂って乗り物酔いのようなひどい頭痛になる現象", isCorrect: false },
-          { text: "難しいプログラミングや勉強を限界まで続けた結果、脳のエネルギーが切れて急に眠くなること", isCorrect: false }
+          { text: "中身のない短い動画などを目的もなくダラダラ見すぎて、脳の深い思考力や集中力が下がってしまう状態", isCorrect: true },
+          { text: "VR（仮想現実）ゴーグルを何時間もつけた結果、三半規管に狂いが生じて激しい頭痛と吐き気が起こること", isCorrect: false },
+          { text: "難解なプログラミング作業を極限まで続けた結果、脳の糖分が完全に消費されて動けなくなる様子", isCorrect: false }
         ]
       },
       {
         termEnglish: "LLM",
         termJapanese: "ラージ・ランゲージ・モデル：大規模言語モデル",
         difficulty: "中",
-        explanation: "LLM（Large Language Model）は「大規模言語モデル」の略で、インターネット上の膨大な文章を学習し、人間のようにきわめて自然な文章作成や対話ができるAIの高度な仕組みです。",
+        explanation: "LLMは、膨大な文章テキストデータを学習することで、人間が話すような高精度な言語理解と自然な文章生成、柔軟な質疑応答を行うことができる最新のAIコアシステムです（ChatGPTなど）。",
         options: [
-          { text: "インターネット上の膨大な文章を学習し、人間のように自然な日本語で会話や文章を作れるAIの仕組み", isCorrect: true },
-          { text: "英語、日本語、フランス語など、世界中のすべての言葉の辞書を丸ごと入れた超軽量な電子辞書", isCorrect: false },
-          { text: "スマホで話しかけると、自分の声をきれいな歌手のような美声に一瞬で変えてくれる通話用の機械", isCorrect: false }
+          { text: "地球上の何十億もの文章データを学習して、人間そっくりに自然な日本語を組み立てられるAIの土台システム", isCorrect: true },
+          { text: "世界中のあらゆる言葉（何百言語）の単語がすべて登録されている、スマホ用超高速ダウンロード電子辞書", isCorrect: false },
+          { text: "通話中の自分の話し声を、リアルタイムでボーカロイドや綺麗な歌手の声に自動で変換してくれる補正アプリ", isCorrect: false }
         ]
       },
       {
         termEnglish: "Multi Modal",
         termJapanese: "マルチモーダル：複数の情報形式",
         difficulty: "高",
-        explanation: "マルチモーダルは「複数の方法（モード）」という意味です。最新のAIは、文字データだけでなく、写真、音声、動画といった異なる種類の情報を同時に組み合わせて理解し、回答することができます。",
+        explanation: "マルチモーダルは、テキストだけでなく、画像、音声、動画、温度など『異なる種類（モード）の複数のデータ』を同時に組み合わせて総合的に理解・処理できる賢いAIの性質をいいます。",
         options: [
-          { text: "文字だけでなく、画像、音声、動画など、いろいろな種類の情報を同時に理解して処理できるAIの性質", isCorrect: true },
-          { text: "1台のパソコンに、WindowsとMacの両方のシステムを同時にインストールして切り替えながら動かす裏技", isCorrect: false },
-          { text: "AIのキャラクターに、怒り・悲しみ・喜びなどたくさんの喜怒哀楽の感情を設定して会話させるシステム", isCorrect: false }
+          { text: "文字だけでなく、画像、音声、動画といった別々の種類のデータを同時にまとめて理解・処理できるAIの能力", isCorrect: true },
+          { text: "Windows用のアプリケーションとMac用のアプリを同時に重ねて動かすことができるプロ専用システム", isCorrect: false },
+          { text: "1体のAIキャラクターに対して、喜怒哀楽のすべての感情パラメータを細かく設定して人間味を与えること", isCorrect: false }
         ]
       },
       {
         termEnglish: "Doom Scrolling（ドゥーム・スクローリング）",
         termJapanese: "ドゥーム・スクローリング：無限スクロール",
         difficulty: "中",
-        explanation: "ドゥーム・スクローリングは、「破滅（Doom）」と画面をスクロールすることを掛け合わせた言葉です。不安や恐怖をあおる悪いニュースばかりを、ダラダラと見続けてしまう依存行動を指します。",
+        explanation: "ドゥーム・スクローリングとは、「破滅（Doom）」を表すような暗いニュースや、不安を煽るようなネット記事ばかりを、自分の心がモヤモヤするのにも関わらずスクロールしてダラダラ読み続けてしまう悪い習慣です。",
         options: [
-          { text: "ネットで悪いニュースや暗い書き込みばかりを、不安になりながらも指でスクロールして見続けてしまうこと", isCorrect: true },
-          { text: "シューティングゲームで、敵の攻撃を避けるために画面を猛スピードで上下に動かす必殺技", isCorrect: false },
-          { text: "お気に入りのネット通販サイトで、欲しい商品が見つかるまで何時間もスクロールし続ける楽しいお買い物", isCorrect: false }
+          { text: "ネット上で悪い事件や不安になるニュース, 攻撃的な書き込みなどをなぜか指でダラダラと見続けてしまうこと", isCorrect: true },
+          { text: "シューティングアクションゲームで、敵の激しい攻撃をよけるために画面を上下に高速で繰り返し動かす裏ワザ", isCorrect: false },
+          { text: "大好きな通販サイトで、ほしい洋服やゲーム機がみつかるまで朝まで夢中で指を動かし続けること", isCorrect: false }
         ]
       },
       {
         termEnglish: "Bias（バイアス）",
         termJapanese: "バイアス：偏り",
         difficulty: "中",
-        explanation: "バイアスは「偏り」を意味します。AIが学習するデータに不公平さや偏りがあると、AIの出す結論や回答も特定の性別や職業に対して不公平・差別的な内容になってしまうことがあります。",
+        explanation: "バイアス（偏り）は、AIが学ぶ学習データに差別や思い込みが含まれていた場合、AI自身の出す判別や推薦回答も不公平な偏り（バイアス）を持ってしまうことが大きな問題になっています。",
         options: [
-          { text: "考え方やデータの『偏り（かたより）』のことで、AIが不公平な判断をしてしまう原因になるもの", isCorrect: true },
-          { text: "インターネットの回線が混雑して、動画が途中でカクカク止まってしまう接続エラーのこと", isCorrect: false },
-          { text: "AIが人間に反抗しないように、あらかじめ頭の中に組み込んでおく安全なロック用の暗号コード", isCorrect: false }
+          { text: "データや情報の『かたより』のことで、AIの出す回答が不公平になったり思い込みを含んでしまう原因になるもの", isCorrect: true },
+          { text: "インターネットのWi-Fi回線が混み合って、読み込みボタンを押しても動画が固まってしまう通信バグ", isCorrect: false },
+          { text: "AIが人間に反抗して勝手に危ないシステムに入り込まないようにするデジタル制限ロック", isCorrect: false }
         ]
       },
       {
         termEnglish: "Fact Check（ファクトチェック）",
         termJapanese: "ファクト・チェック",
         difficulty: "中",
-        explanation: "ファクトチェックは、ネット上のニュース、SNSの投稿、AIの作成した文章などが「事実（Fact）」に基づいているか、ウソやデマではないかを詳しく検証して確認する作業です。",
+        explanation: "ファクトチェックとは、ネット上の噂やSNSデマ、あるいはAIの作った「本当っぽいウソ」の文章に対して、元の確かな情報源やデータを照らし合わせて正しい『事実』かどうかを丁寧に検証する行為です。",
         options: [
-          { text: "ネットの情報やAIが作った文章が、ウソではなく本当に正しいかどうかを調べて確かめること", isCorrect: true },
-          { text: "学校の宿題を提出する前に、ノートの漢字の書き間違いや計算ミスを友達同士で直し合うこと", isCorrect: false },
-          { text: "AIの回答スピードを速くするために、不要なシステムファイルをすべて削除して整理すること", isCorrect: false }
+          { text: "ネットに流れる噂や、生成AIが作った本当っぽく見える文章が、嘘やデマではなく『本当に事実か』を確かめること", isCorrect: true },
+          { text: "学校の定期テストが返ってきたあとに、先生の採点ミスや配点のズレがないかを生徒みんなで確認しあう作業", isCorrect: false },
+          { text: "新しく買ってきたスマホやスマートウォッチが、衝撃を与えても本当に壊れないか落として調べてみること", isCorrect: false }
         ]
       },
       {
         termEnglish: "Deep Fake（ディープフェイク）",
         termJapanese: "ディープ・フェイク",
         difficulty: "中",
-        explanation: "ディープフェイクは、深層学習（ディープラーニング）というAI技術を使って作られた、きわめて精巧な偽の画像や動画です。なりすましやデマ拡散に利用されるリスクが問題視されています。",
+        explanation: "ディープフェイクは、解像学習（ディープラーニング）と呼ばれる高度なAI技術を利用して、本物の人が本当に発言したかのようにでっち上げられた、見分けのつかない非常に精巧な偽動画や写真です。",
         options: [
-          { text: "AIを使って、本物の人が本当にしゃべっているかのように作った、見分けがつかないほどリアルな偽の動画や画像", isCorrect: true },
-          { text: "どんなに細かいシワや傷もきれいに消して、映画スターのように美しくしてくれるカメラの自動フィルター", isCorrect: false },
-          { text: "SNSのプロフィールアイコンを、自分の顔ではなくてアニメのキャラクターに加工してくれる人気の機能", isCorrect: false }
+          { text: "AIを使って本物の人があたかも話しているかのように合成された、肉眼で見抜くのが難しい極めてリアルな嘘の動画", isCorrect: true },
+          { text: "映画館の最前列で撮影したような圧倒的な立体感と迫力を演出できる、スマホカメラ専用 of 3Dフィルター", isCorrect: false },
+          { text: "オンライン通話で、自分の部屋が汚れているのを隠すために背景を宇宙空間や別世界に自動処理してくれる機能", isCorrect: false }
         ]
       },
       {
         termEnglish: "Netflix Binge",
         termJapanese: "ネットフリックス・ビンジ：ネトフリの一気見",
         difficulty: "高",
-        explanation: "ビンジ（Binge）は「度を越した、過度な」という意味です。ネットフリックスなどの動画配信サービスで、一度見始めると止まらなくなり、何話も続けて一気に見続けてしまう行動を指します。",
+        explanation: "Binge（ビンジ）は「過度な消費」という意味。次のストーリーが気になって、睡眠時間ややるべき学習を削り、アニメやドラマなどを『もう1話だけ…』と夜通し一気に視聴し続けてしまう状態をいいます。",
         options: [
-          { text: "動画サービスなどで、アニメやドラマを『やめられない！』と何話も続けて一気に見続けてしまうこと", isCorrect: true },
-          { text: "ネットフリックスの会員同士が、同じ映画を見ながらチャット機能を使ってオンラインで盛り上がること", isCorrect: false },
-          { text: "有料の動画サービスを、家族や友達と合計5人以上で同時に共有して視聴料を割り勘にする節約術", isCorrect: false }
+          { text: "動画配信アプリでアニメやドラマなどを、見るのがやめられなくなって何話も何時間も一気に視聴し続けること", isCorrect: true },
+          { text: "お互いの家にいながら、オンライン通話を使って同時に同じ映画を再生して盛り上がる観賞スタイル", isCorrect: false },
+          { text: "学割や家族割を利用して、1つのアカウントの支払いを複数人で細かく割り勘にするセービングテクニック", isCorrect: false }
         ]
       },
       {
         termEnglish: "AI Slop（AIスロップ）",
         termJapanese: "エーアイ・スロップ",
         difficulty: "高",
-        explanation: "AIスロップは、AIによって大量かつ低コストで自動生成された、中身のない適当な文章や、崩れた奇妙な画像などの「粗悪なコンテンツ」のことです。インターネットの検索結果を汚す要因として嫌われています。",
+        explanation: "AIスロップとは、AIを使ってほとんどコストをかけずに自動で大量生産された、内容がペラペラで嘘だらけのウェブ記事や、手足がぐにゃぐにゃに崩れたAIイラストなど、ネット上にはびこる『価値の低いゴミコンテンツ』を指する言葉です。",
         options: [
-          { text: "インターネット上に溢れる、AIが自動で作った中身のない、質の低いゴミのような記事や画像のこと", isCorrect: true },
-          { text: "AIが自動で部屋の中を掃除してくれる、ゴミを絶対に吸い残さない高機能なお掃除ロボット", isCorrect: false },
-          { text: "プログラミングのコードの中に、AIが勝手に残していったバグ（ミス）を自動で修復してくれる便利な機能", isCorrect: false }
+          { text: "インターネット上に自動で大量生産されて溢れる、AIが作った低品質で中身のないお粗末なウェブサイトや崩れた画像", isCorrect: true },
+          { text: "散らかった勉強部屋を自動で認識し、ゴミを吸い残すことなく完全に自動清掃してくれる最新鋭ロボット", isCorrect: false },
+          { text: "プログラムのコードを入力した際、エラーの引き金になる余分なスペースを自動でカットして軽くしてくれるシステム", isCorrect: false }
         ]
       },
       {
         termEnglish: "Algorithm（アルゴリズム）",
         termJapanese: "アルゴリズム",
         difficulty: "低",
-        explanation: "アルゴリズムとは、コンピューターが特定の計算や処理を行う際の「具体的な手順」や「考え方のルール」のことです。レシピ通りに料理を作る手順のようなものです。",
+        explanation: "アルゴリズムとは、コンピューターが複雑な問題を計算したり解決したりするための、最も無駄のない、論理的な『解き方のステップや手順』です。料理を美味しく作るレシピの手順に似ています。",
         options: [
-          { text: "コンピューターが計算をしたり、問題を解決したりするための『手順』や『計算のルール』のこと", isCorrect: true },
-          { text: "世界中で使われている暗号通貨（ビットコインなど）を管理する巨大なコンピューターのこと", isCorrect: false },
-          { text: "スマホの充電を長持ちさせるために、画面の明るさを自動調整する特別なガラス板", isCorrect: false }
+          { text: "コンピューターに命令を出し、計算や課題解決を行わせるための、論理的な『手順』や『処理のきまり』のこと", isCorrect: true },
+          { text: "世界中で使われているビットコインや暗号通貨の取引データを厳重に守っている世界最大のサーバー金庫", isCorrect: false },
+          { text: "スマホのバッテリー劣化を極限まで抑えるために、夜間の充電速度を自動調整する電子制御チップ", isCorrect: false }
         ]
       },
       {
         termEnglish: "Hallucinations（ハルシネーション）",
-        termJapanese: "ハルシネーション：厳格（幻覚）",
+        termJapanese: "ハルシネーション：幻覚",
         difficulty: "低",
-        explanation: "ハルシネーションとは、AIが事実に基づかない、もっともらしい「嘘（誤り）」の回答を堂々と出力する現象です。まるでAIが幻覚を見ているかのような様子から名付けられました。",
+        explanation: "ハルシネーションは、AIがまるで『幻覚（Hallucination）』を見ているかのように、でたらめな嘘の事実を、いかにも真実であるかのように自信満々に出力してしまうエラー現象です。",
         options: [
-          { text: "AIが、さも本当のことのように、もっともらしい嘘や間違った情報を出力してしまう現象", isCorrect: true },
-          { text: "スマホを使いすぎて、目がチカチカして周りの景色が歪んで見えてしまうこと", isCorrect: false },
-          { text: "AIの開発者が、徹夜でプログラムを書き続けた結果、お化けが見えたと錯覚すること", isCorrect: false }
+          { text: "生成AIが、もっともらしい言葉づかいを使いつつ、完全に事実と異なる嘘の情報を堂々と出力してしまうエラー", isCorrect: true },
+          { text: "スマホを一日10時間以上見続けたことにより、目の前のピントが合わなくなって周囲がかすんで見える状態", isCorrect: false },
+          { text: "AIシステムのプログラムが急激に過熱し、異常終了して真っ黒なエラーコード画面のまま動作を停止すること", isCorrect: false }
         ]
       },
       {
         termEnglish: "AI（Artificial Intelligence）",
         termJapanese: "エーアイ：アーティフィシャル・インテリジェンス",
         difficulty: "低",
-        explanation: "AI（人工知能）は、人間のような「学習、認識、判断、予測」などの知的な能力を、コンピューターのソフトウェアや技術を用いて人工的に再現したものです。",
+        explanation: "AI（人工知能）とは、データをもとにした学習、状況に応じた認識やパターン分析、最適な結論の予測や選択など、人間の知的な思考のプロセスをコンピューターのプログラムによって再現する科学技術です。",
         options: [
-          { text: "コンピューターに人間のような『考える・覚える・判断する』といった知能を持たせる技術のこと", isCorrect: true },
-          { text: "ゲームを自動的にプレイして最速でクリアするための専用ハードウェア", isCorrect: false },
-          { text: "インターネット上にあるすべてのホームページの文字データを保存する巨大な倉庫", isCorrect: false }
+          { text: "コンピューターを使って、人間の『覚える・考える・予測する』といった知的な活動を真似して再現する技術", isCorrect: true },
+          { text: "世界のインターネット上に公開されているすべての動画・音楽ファイルの著作権を守る国際的な組織", isCorrect: false },
+          { text: "オンライン通信を一番早くて安定した回線ルートへ自動的に誘導し、ゲーム of 遅延をなくすシステム", isCorrect: false }
         ]
       },
       {
         termEnglish: "Generative AI（生成AI）",
         termJapanese: "ジェネラティブ・エーアイ：生成AI",
         difficulty: "低",
-        explanation: "生成AIは、従来のAIのように「予測や判定」をするだけでなく、指示（プロンプト）に応じて新しいテキスト、画像、音楽、ソースコードなどを自ら新しく生み出す（ジェネレートする）能力を持ったAIです。",
+        explanation: "生成AIは、従来の『データを分類・判定するAI』とは違い、人間からの要望（プロンプト）に応じて、テキスト文章やきれいな画像、音楽、プログラムコードなどをゼロから新しく作り出す（生成する）ことができる画期的なAIです。",
         options: [
-          { text: "指示文を入力することで、文章や画像、音楽などを新しく作り出すことができるAIのこと", isCorrect: true },
-          { text: "インターネット回線の速度を自動で10倍に速くしてくれる次世代のルーター", isCorrect: false },
-          { text: "スマホの画面のブルーライトを完全にカットして目が疲れないようにするアプリ", isCorrect: false }
+          { text: "人間が命令（指示）を入力するだけで、オリジナルの文章、見栄えのよいイラスト、音楽などを新しく作成できるAI", isCorrect: true },
+          { text: "スマホの電池寿命を現在の2倍以上に引き伸ばすことができる、新素材を用いた高性能な充電用バッテリー", isCorrect: false },
+          { text: "インターネットを介して、世界中の人々が書いた宿題の文章の誤字脱字を、自動で綺麗な文字に修正するツール", isCorrect: false }
         ]
       },
       {
         termEnglish: "Academic Integrity（アカデミック・インテグリティ）",
         termJapanese: "アカデミック・インテグリティ：学問に対する誠実性",
         difficulty: "高",
-        explanation: "アカデミック・インテグリティは「誠実に学ぶ心構え」のことです。宿題やレポートを作成する際、AIに文章を丸写しさせたり、他人のアイデアを盗むコピペをしたりせず、自分の力で正直に学び、ルールを守ることです。",
+        explanation: "アカデミック・インテグリティは「誠実に学び、自分の頭で考えるルール」のことです。レポート課題でAIにそのまま答えを作らせてコピペ提出することは、この誠実性に真っ向から反する行為として強く問題視されています。",
         options: [
-          { text: "レポート作成などで、ネットのコピペやAIの丸投げをせず、自分の力で正直に勉強に取り組むこと", isCorrect: true },
-          { text: "学校のパソコン室で、先生に隠れてオンラインゲームやSNSの閲覧を絶対にしないという校則", isCorrect: false },
-          { text: "AIの歴史や仕組みについて書かれた分厚い教科書を、最初から最後まで1文字も飛ばさずに暗記すること", isCorrect: false }
+          { text: "課題やレポートを書く際、AIの出力した文章をそのまま写して提出せず、自分の頭でルールを守って取り組むこと", isCorrect: true },
+          { text: "学校内に持ち込むスマホについて、授業時間中に絶対にアラームや通知音を鳴らさないようにする生徒会の協定", isCorrect: false },
+          { text: "AIの起源や、初期のコンピューター開発者が作成した全ての英単語と暗号文を完全に暗記するトレーニング", isCorrect: false }
         ]
       },
       {
         termEnglish: "Explorer Mode（エクスプローラー・モード）",
         termJapanese: "エクスプローラー・モード：探求者モード",
         difficulty: "中",
-        explanation: "エクスプローラー（探究者）モードは、AIを「代わりに宿題をやってくれる自動ロボ」にするのではなく、自分のアイデアを豊かにする相談相手や、疑問を深掘りするためのパートナーとして賢く付き合う姿勢のことです。",
+        explanation: "エクスプローラー（探究者）モードは、AIを自分の思考を広げるための相談役や壁打ち相手として使う、自律的で賢い付き合い方です。AIの助けを借りながらも、主役は自分の脳です。",
         options: [
-          { text: "AIに答えを丸投げするのではなく、自分の考えを深めるための『相談相手』としてAIと一緒に探求する使い方", isCorrect: true },
-          { text: "道に迷ったとき、スマホのGPSを使って目的地までの最短ルートを自動で画面に表示してくれる案内機能", isCorrect: false },
-          { text: "ロールプレイングゲーム（RPG）で、マップの隅々まで自動で歩き回って隠された宝箱を見つける裏技設定", isCorrect: false }
+          { text: "AIに全ての正解を求めるのではなく、自分の考えを深めたりアイデアを膨らませる『相談相手』として使う賢い姿勢", isCorrect: true },
+          { text: "未知の観光地に行ったとき、スマホの地図がおすすめの抜け道を自動選定して声で知らせてくれるお出かけ機能", isCorrect: false },
+          { text: "ゲームの広いマップの中で、自動でキャラクターが敵を倒して隠されたレアな武器やコインを回収してくれる周回設定", isCorrect: false }
         ]
       },
       {
         termEnglish: "Passenger Mode（パッセンジャー・モード）",
         termJapanese: "パッセンジャー・モード：乗客モード",
         difficulty: "中",
-        explanation: "パッセンジャー（乗客）モードは、バスの乗客のようにAIにすべての思考や作業を任せきりにし、自分は窓の外をただ眺めているような受け身な状態です。AIの答えを丸ごとコピペしてよしとする、学びの少ない状態です。",
+        explanation: "パッセンジャー（乗客）モードとは、バスに乗っているかのように、行き先も思考もAIに全て任せて自分は全く考えない受け身な状態です。AIに作らせたレポートを何も読まずに提出することはこの状態です。",
         options: [
-          { text: "自分で何も考えずに、AIが出してくれた答えをそのまま信じて流されるだけの、受け身な使い方のこと", isCorrect: true },
-          { text: "バスや電車のチケットをスマホで購入したあと、改札口で画面を見せるだけで通れるようになる通学用モード", isCorrect: false },
-          { text: "AIが搭載された自動運転の車に乗って、寝ているだけで目的地まで安全に送り届けてくれる快適なシステム", isCorrect: false }
+          { text: "自分の頭で何も考えず、AIが書いた答えや提案をそのまま信じ込んでそのまま利用する、受け身すぎる状態", isCorrect: true },
+          { text: "通学電車に乗っている間だけ、スマホ画面に学校からの緊急のお知らせを最優先で大きく映し出す設定", isCorrect: false },
+          { text: "自動ブレーキをかけてくれる人工知能システムを搭載した新型車の、運転支援プログラム", isCorrect: false }
+        ]
+      },
+      {
+        termEnglish: "SFV（Short Form Video：ショート動画）",
+        termJapanese: "ショート・フォーム・ビデオ：ショート動画",
+        difficulty: "低",
+        explanation: "SFVとは、TikTokやInstagramのリール、YouTubeショートなどの縦画面で流れる数十秒〜1分の短い動画です。刺激的な映像が自動で次々再生されるため、何時間も見てしまう依存を引き起こしやすい性質を持っています。",
+        options: [
+          { text: "TikTokやリール、YouTubeなどで見られる、数十秒から1分程度の縦長の短い動画コンテンツ", isCorrect: true },
+          { text: "授業中にスマホが鳴らないように、先生が一括で生徒のスマホ回線をカットする学校専用のシステム", isCorrect: false },
+          { text: "パソコン画面を3分割して、同時に複数のネットフリックス動画を並べて再生する上級者向けの裏ワザ", isCorrect: false }
+        ]
+      },
+      {
+        termEnglish: "Lack of Attention",
+        termJapanese: "ラック・オブ・アテンション：注意の欠如",
+        difficulty: "高",
+        explanation: "Lack of Attentionは、スマホの膨大な通知や情報過多の環境にさらされ続けた結果、読書や授業など『長い時間、1つの対象に粘り強く集中し続ける能力』が失われていく状態です。",
+        options: [
+          { text: "スマホの情報やショート動画の刺激に慣れすぎて、1つの本や授業に長く集中する力が弱まってしまうこと", isCorrect: true },
+          { text: "コンピューターの動きが遅くなりすぎて、どれだけキーボードを強く叩いても全く文字が表示されなくなる現象", isCorrect: false },
+          { text: "学校からの重要なお手紙や連絡プリントを、うっかりカバンの底に忘れて親に渡すのが遅れること", isCorrect: false }
+        ]
+      },
+      {
+        termEnglish: "Privacy",
+        termJapanese: "プライバシー",
+        difficulty: "低",
+        explanation: "プライバシーとは、自分の名前や顔写真、住所、行動、チャット履歴などの『私生活や自分の個人的なデータ』を、他人に勝手に見られたり利用されたりしないように守る権利や安全性のことです。",
+        options: [
+          { text: "自分の名前、写真、今いる場所などのプライベートな個人情報を、他人に勝手に覗かれないように保護すること", isCorrect: true },
+          { text: "スマホにログインするための自分にしか分からない指紋や顔認証を、裏側で暗号化して保存しておくチップ", isCorrect: false },
+          { text: "SNSで、特定の友達にだけ秘密の手紙を書いて、返信がきたら自動で文字が消えるようにする秘密の設定", isCorrect: false }
+        ]
+      },
+      {
+        termEnglish: "Human-AI-Human Loop",
+        termJapanese: "人間-AI-人間ループ",
+        difficulty: "中",
+        explanation: "Human-AI-Human Loopとは、まず人間がAIに指示を出し（Human to AI）、AIが回答を作成し、さらにそれを最終的に別の人間（あるいは同一人物）が責任を持ってチェック・評価して修正を完了する（AI to Human）、人間とAIの協調プロセスです。",
+        options: [
+          { text: "人間がAIに指示を出し、作られた成果物を最終的に別の人間が責任を持ってチェックして世に出すという一連の協力の流れ", isCorrect: true },
+          { text: "お互いの声をAIに録音し、交互に再生することで人間の会話のトレーニングを行うリハビリ用のゲームソフト", isCorrect: false },
+          { text: "AIロボットが人間を捕まえて、地球環境を守るために一定時間おきに強制的にゴミ拾いをさせる活動ループ", isCorrect: false }
         ]
       }
     ];
 
-    // Web Audio APIによるリアルタイムシンセサイズ（効果音）
+    // Web Audio APIによる音響シンセサイズ
     const playSynthesizedSound = (isCorrect) => {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -707,7 +823,7 @@
         const ctx = new AudioContext();
         
         if (isCorrect) {
-          // 正解音: 高音の爽やかなアルペジオ (C5 -> E5 -> G5)
+          // 正解音 (C5 -> E5 -> G5)
           const playNote = (freq, startTime, duration) => {
             const osc = ctx.createOscillator();
             const gainNode = ctx.createGain();
@@ -720,35 +836,29 @@
             osc.start(startTime);
             osc.stop(startTime + duration);
           };
-          
-          playNote(523.25, ctx.currentTime, 0.25);       // C5
-          playNote(659.25, ctx.currentTime + 0.08, 0.25); // E5
-          playNote(783.99, ctx.currentTime + 0.16, 0.35); // G5
+          playNote(523.25, ctx.currentTime, 0.25);
+          playNote(659.25, ctx.currentTime + 0.08, 0.25);
+          playNote(783.99, ctx.currentTime + 0.16, 0.35);
         } else {
-          // 不正解音: やや濁った低いブザー音 (A3 -> F3)
+          // 不正解音 (ブザー音 A3 -> F3)
           const osc = ctx.createOscillator();
           const gainNode = ctx.createGain();
           const filter = ctx.createBiquadFilter();
-          
           osc.type = 'sawtooth';
           osc.frequency.setValueAtTime(160, ctx.currentTime);
           osc.frequency.linearRampToValueAtTime(110, ctx.currentTime + 0.3);
-          
           filter.type = 'lowpass';
           filter.frequency.setValueAtTime(350, ctx.currentTime);
-          
           gainNode.gain.setValueAtTime(0.12, ctx.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-          
           osc.connect(filter);
           filter.connect(gainNode);
           gainNode.connect(ctx.destination);
-          
           osc.start();
           osc.stop(ctx.currentTime + 0.3);
         }
       } catch (e) {
-        console.error("Audio synthesis failed:", e);
+        console.error("Sound generation failed: ", e);
       }
     };
 
@@ -764,14 +874,16 @@
         window.addEventListener('resize', () => this.resize());
       }
       resize() {
-        this.canvas.width = this.canvas.parentElement.clientWidth;
-        this.canvas.height = this.canvas.parentElement.clientHeight || 500;
+        if (this.canvas && this.canvas.parentElement) {
+          this.canvas.width = this.canvas.parentElement.clientWidth;
+          this.canvas.height = this.canvas.parentElement.clientHeight || 500;
+        }
       }
       start() {
         this.active = true;
         this.particles = [];
         const colors = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981', '#f59e0b'];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 90; i++) {
           this.particles.push({
             x: Math.random() * this.canvas.width,
             y: Math.random() * this.canvas.height - this.canvas.height,
@@ -791,13 +903,14 @@
         if (this.animationFrame) {
           cancelAnimationFrame(this.animationFrame);
         }
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.ctx && this.canvas) {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
       }
       animate() {
         if (!this.active) return;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         let alive = false;
-        
         for (let i = 0; i < this.particles.length; i++) {
           const p = this.particles[i];
           p.tiltAngle += p.tiltAngleIncremental;
@@ -816,14 +929,12 @@
           this.ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
           this.ctx.stroke();
         }
-
         if (alive && this.active) {
           this.animationFrame = requestAnimationFrame(() => this.animate());
         }
       }
     }
 
-    // Vue 3 アプリケーション定義
     const { createApp, ref, computed, nextTick } = Vue;
 
     createApp({
@@ -837,20 +948,24 @@
         const history = ref([]);
         const showReview = ref(false);
         const soundEnabled = ref(true);
+        const isReviewMode = ref(false); // 間違えた問題だけ解き直すモード
+        const copySuccessVisible = ref(false); // コピー成功トースト通知用
+        
+        // これまで解いた最後のセット（同じ問題セットで復習するための一時保存用）
+        let lastQuestionSet = []; 
+        let lastWrongQuestions = []; // 前回のクイズで間違えた問題
         let confetti = null;
 
-        // 音声オンオフの切り替え
         const toggleSound = () => {
           soundEnabled.value = !soundEnabled.value;
         };
 
-        // 難易度に基づいて問題リストをバランス抽出（低3、中4、高3、計10）
+        // 出題サンプラー（低3、中4、高3の絶妙なバランスで自動抽出）
         const selectBalancedQuestions = () => {
           const lowPool = vocabularyList.filter(item => item.difficulty === '低');
           const midPool = vocabularyList.filter(item => item.difficulty === '中');
           const highPool = vocabularyList.filter(item => item.difficulty === '高');
 
-          // シャッフル用ヘルパー
           const shuffle = (array) => {
             return array.map(value => ({ value, sort: Math.random() }))
                         .sort((a, b) => a.sort - b.sort)
@@ -861,11 +976,10 @@
           const selectedMid = shuffle(midPool).slice(0, 4);
           const selectedHigh = shuffle(highPool).slice(0, 3);
 
-          // 10問結合してシャッフル
           const combined = [...selectedLow, ...selectedMid, ...selectedHigh];
           const finalQuestions = shuffle(combined);
 
-          // 各問題の選択肢もシャッフルする
+          // 選択肢をクイズごとにシャッフルして整形
           return finalQuestions.map(q => {
             const shuffledOptions = shuffle(q.options.map(opt => ({ ...opt })));
             return {
@@ -875,18 +989,42 @@
           });
         };
 
-        // クイズ開始
-        const startQuiz = () => {
-          // ブラウザのWeb Audio APIがインタラクションによって有効化されるように
-          // 空のオーディオを一瞬アクティブ化させておきます
+        // クイズ開始・再挑戦の処理
+        const startQuiz = (mode) => {
+          // Web Audio APIのアクティベート準備
           try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            if (ctx.state === 'suspended') {
-              ctx.resume();
-            }
+            if (ctx.state === 'suspended') ctx.resume();
           } catch(e){}
 
-          questions.value = selectBalancedQuestions();
+          if (mode === 'normal') {
+            // 新しくバランスよく10問を抽出
+            questions.value = selectBalancedQuestions();
+            isReviewMode.value = false;
+          } else if (mode === 'incorrect_only') {
+            // 前回のクイズで間違えた問題だけを抽出してもう一度確認クイズを開始
+            if (lastWrongQuestions.length > 0) {
+              questions.value = lastWrongQuestions.map(q => {
+                // オプションを再度シャッフル
+                const shuffled = q.options.map(opt => ({ ...opt })).sort(() => Math.random() - 0.5);
+                return { ...q, options: shuffled };
+              });
+              isReviewMode.value = true;
+            } else {
+              // 間違えた問題がなければ通常開始
+              questions.value = selectBalancedQuestions();
+              isReviewMode.value = false;
+            }
+          } else if (mode === 'same_set') {
+            // 前回の同じ10問をそっくりそのまま最初から解き直す
+            questions.value = lastQuestionSet.map(q => {
+              const shuffled = q.options.map(opt => ({ ...opt })).sort(() => Math.random() - 0.5);
+              return { ...q, options: shuffled };
+            });
+            isReviewMode.value = true;
+          }
+
+          // クイズステートのリセット
           currentQuestionIndex.value = 0;
           selectedOptionIndex.value = null;
           hasAnswered.value = false;
@@ -896,24 +1034,20 @@
           currentView.value = 'quiz';
         };
 
-        // 現在の問題
         const currentQuestion = computed(() => {
           return questions.value[currentQuestionIndex.value] || {};
         });
 
-        // 選択された答えが正しいか
         const isCorrectAnswer = computed(() => {
           if (selectedOptionIndex.value === null) return false;
           return currentQuestion.value.options[selectedOptionIndex.value]?.isCorrect || false;
         });
 
-        // 選択肢のクリック
         const selectOption = (index) => {
           if (hasAnswered.value) return;
           selectedOptionIndex.value = index;
         };
 
-        // 解答決定ボタンの押下
         const submitAnswer = () => {
           if (selectedOptionIndex.value === null || hasAnswered.value) return;
           hasAnswered.value = true;
@@ -921,17 +1055,19 @@
           const correctOption = currentQuestion.value.options.find(opt => opt.isCorrect);
           const selectedOption = currentQuestion.value.options[selectedOptionIndex.value];
 
-          // 履歴の追加
+          // 履歴を保持
           history.value.push({
             termEnglish: currentQuestion.value.termEnglish,
             termJapanese: currentQuestion.value.termJapanese,
+            difficulty: currentQuestion.value.difficulty,
             isCorrect: selectedOption.isCorrect,
             selectedText: selectedOption.text,
             correctText: correctOption.text,
-            explanation: currentQuestion.value.explanation
+            explanation: currentQuestion.value.explanation,
+            // 復習の際、元の問題を参照できるようにオブジェクトを丸ごと保持
+            originalObj: currentQuestion.value
           });
 
-          // 正解ならスコアをプラス
           if (selectedOption.isCorrect) {
             score.value += 1;
             if (soundEnabled.value) playSynthesizedSound(true);
@@ -940,94 +1076,142 @@
           }
         };
 
-        // 次の問題（または結果）
         const nextQuestion = () => {
-          if (currentQuestionIndex.value < 9) {
+          if (currentQuestionIndex.value < questions.value.length - 1) {
             currentQuestionIndex.value += 1;
             selectedOptionIndex.value = null;
             hasAnswered.value = false;
           } else {
+            // 今回の全問題セットと、間違えた問題セットを一時保存（確認クイズ用）
+            lastQuestionSet = [...questions.value];
+            lastWrongQuestions = history.value
+              .filter(item => !item.isCorrect)
+              .map(item => item.originalObj);
+
             currentView.value = 'result';
             
-            // リザルト画面で紙吹雪エフェクトをロード
+            // 紙吹雪システム
             nextTick(() => {
               const canvas = document.getElementById('confetti-canvas');
               if (canvas) {
                 confetti = new ConfettiEffect(canvas);
                 confetti.start();
-                
-                // スコアが良かった場合、お祝い効果音を追加で鳴らす
-                if (score.value >= 8 && soundEnabled.value) {
-                  setTimeout(() => {
-                    playSynthesizedSound(true);
-                  }, 400);
+                if (score.value === questions.value.length && soundEnabled.value) {
+                  setTimeout(() => playSynthesizedSound(true), 400);
                 }
               }
             });
           }
         };
 
-        // スコア評価とランク
         const scoreRank = computed(() => {
           const s = score.value;
-          if (s === 10) {
+          const total = questions.value.length;
+          const ratio = total > 0 ? s / total : 0;
+
+          if (ratio === 1) {
             return {
-              badge: "👑",
-              title: "生成AIマスター（神レベル）",
-              msg: "おめでとうございます！なんと満点です！2026年最新のAIリテラシーと言葉の仕組みを完璧に理解しています。将来のリーダーはあなたです！"
+              badge: "🏆",
+              title: "テクノロジー・マスター（完全無欠）",
+              msg: "素晴らしい！全問正解です。2026年のAI社会を先導する完璧なリテラシーが身についています。自信を持ってAIを活用してください！"
             };
-          } else if (s >= 8) {
+          } else if (ratio >= 0.8) {
             return {
               badge: "🌟",
-              title: "生成AIエキスパート（優等生）",
-              msg: "すばらしい！ほとんど全ての用語を正確に理解しています。デジタル技術を友達に説明できるレベルです！"
+              title: "デジタル・エキスパート（超優秀）",
+              msg: "素晴らしい実力です！ほぼすべての重要テクノロジー用語の本質を的確に理解しています。確認クイズで完璧に仕上げましょう！"
             };
-          } else if (s >= 5) {
+          } else if (ratio >= 0.5) {
             return {
               badge: "🌱",
               title: "デジタル・チャレンジャー",
-              msg: "素晴らしい挑戦！言葉の基礎はバッチリです。間違えた部分を復習することで、さらに深くAI技術を乗りこなせますよ！"
+              msg: "合格ラインです！よく頑張りました。間違えた箇所を『もう一度確認クイズ』で克服すれば、実力は完璧になります！"
             };
           } else {
             return {
               badge: "📖",
-              title: "これから学ぼう！",
-              msg: "ナイスチャレンジ！初めて出会う難しい言葉も多かったはずです。もう一度やって、知識をレベルアップさせていきましょう！"
+              title: "インプットから始めよう！",
+              msg: "挑戦ありがとうございました！難しい用語も多かったはずです。間違えた問題だけを解き直す『確認クイズ』機能を使って、今すぐレベルアップしてみましょう！"
             };
           }
         });
 
-        // スコアゲージの色
         const scoreColor = computed(() => {
           const s = score.value;
-          if (s === 10) return '#10b981'; // 緑
-          if (s >= 8) return '#6366f1';  // インディゴ
-          if (s >= 5) return '#f59e0b';  // オレンジ
-          return '#f43f5e';             // 赤
+          const total = questions.value.length;
+          const ratio = total > 0 ? s / total : 0;
+          if (ratio === 1) return '#10b981';
+          if (ratio >= 0.8) return '#6366f1';
+          if (ratio >= 0.5) return '#f59e0b';
+          return '#f43f5e';
         });
 
-        // リセットしてもう一回挑戦
-        const resetQuiz = () => {
-          if (confetti) {
-            confetti.stop();
-          }
-          startQuiz();
+        // 提出結果用テキスト（宛先、件名、内容をすべてまとめる）
+        const generateReportText = () => {
+          let bodyText = `★ 生成AI・テクノロジー用語理解度クイズ2026 結果レポート ★\n\n`;
+          bodyText += `-----------------------------------------\n`;
+          bodyText += `■ スコア: ${score.value} / ${questions.value.length} 問\n`;
+          bodyText += `■ 正答率: ${Math.round((score.value / questions.value.length) * 100)}%\n`;
+          bodyText += `■ ランク: ${scoreRank.value.badge} ${scoreRank.value.title}\n`;
+          bodyText += `-----------------------------------------\n\n`;
+          
+          bodyText += `▼ 回答履歴と解説サマリー:\n\n`;
+          history.value.forEach((item, index) => {
+            const mark = item.isCorrect ? '⭕ 正解' : '❌ 不正解';
+            bodyText += `【第 ${index + 1} 問】 ${item.termEnglish} (${item.termJapanese})\n`;
+            bodyText += `  ・難易度: ${item.difficulty}\n`;
+            bodyText += `  ・あなたの回答: ${item.selectedText} [${mark}]\n`;
+            if (!item.isCorrect) {
+              bodyText += `  ・正しい回答: ${item.correctText}\n`;
+            }
+            bodyText += `  ・解説:\n    ${item.explanation}\n`;
+            bodyText += `-----------------------------------------\n\n`;
+          });
+          
+          bodyText += `クイズを通じて最新テクノロジーの考え方を継続して学習しましょう！\n`;
+          bodyText += `© 2026 AI LITERACY CHALLENGE FOR STUDENTS\n`;
+          return bodyText;
         };
 
-        // 終了（ヒントとまとめ画面へ）
-        const finishSession = () => {
-          if (confetti) {
-            confetti.stop();
+        // NEW: クリップボードコピー機能 (Sandbox対応)
+        const copyReportToClipboard = () => {
+          const reportText = generateReportText();
+          
+          // フォールバック処理 (document.execCommand('copy'))
+          const textArea = document.createElement("textarea");
+          textArea.value = reportText;
+          textArea.style.top = "0";
+          textArea.style.left = "0";
+          textArea.style.position = "fixed";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+              copySuccessVisible.value = true;
+              setTimeout(() => {
+                copySuccessVisible.value = false;
+              }, 4000);
+            } else {
+              alert("コピーに失敗しました。お手数ですが手動でテキストを選択してコピーしてください。");
+            }
+          } catch (err) {
+            console.error('Fallback: Copy failed', err);
           }
+          document.body.removeChild(textArea);
+        };
+
+        const finishSession = () => {
+          if (confetti) confetti.stop();
           currentView.value = 'finish';
         };
 
-        // ホームへ戻る
         const returnHome = () => {
           currentView.value = 'welcome';
         };
 
-        // 難易度に応じたCSSクラス
         const difficultyClass = (difficulty) => {
           switch(difficulty) {
             case '低': return 'bg-emerald-50 text-emerald-800 border-emerald-200';
@@ -1056,6 +1240,8 @@
           history,
           showReview,
           soundEnabled,
+          isReviewMode,
+          copySuccessVisible,
           startQuiz,
           currentQuestion,
           isCorrectAnswer,
@@ -1064,7 +1250,7 @@
           nextQuestion,
           scoreRank,
           scoreColor,
-          resetQuiz,
+          copyReportToClipboard,
           finishSession,
           returnHome,
           difficultyClass,
